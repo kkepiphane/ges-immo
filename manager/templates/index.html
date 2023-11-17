@@ -1,0 +1,126 @@
+{%extends 'app.html'%}
+
+{%load static %}
+
+{% block content %}
+<section class="content mt-3">
+    <div class="container-fluid">
+        <div class="row">
+            {% if user.immouser.role.id != 2 %}
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <a href="{% url 'buildingList' %}">
+                        <div class="small-box bg-primary">
+                            <div class="inner">
+                                <h3>{{ building_count }}</h3>
+
+                                <p>Propriétés</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    
+                    <a href="{% url 'appartmentList' %}">
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{ appartment_count }}</h3>
+
+                                <p>Appartments</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                        </div>
+                    </a> 
+                </div>
+
+                {% if user.is_staff %}
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <a href="{% url 'landlordList' %}">
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3>{{ landlord_count}}</h3>
+
+                                    <p>Bailleurs</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-user-friends"></i>
+                                </div>
+                            </div>
+                        </a> 
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <a href="{% url 'ask' %}">
+                            <div class="small-box bg-warning">
+                                <div class="inner">
+                                    <h3 style="color:white !important">{{ ask_count }}</h3>
+                                    <p style="color:white !important">Demandes</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-table"></i>
+                                </div>
+                            </div>
+                        </a> 
+                    </div>
+                {% endif %}
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <a href="{% url 'tenantList' %}">
+                        <div class="small-box bg-secondary">
+                            <div class="inner">
+                                <h3 style="color:white !important">{{ tenant_count }}</h3>
+                                <p style="color:white !important">Locataires</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                    </a> 
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <a href="{% url 'landlordWallet' %}">
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>{{ wallet }} FCFA</h3>
+
+                                <p>Loyer collecté</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                        </div>
+                    </a> 
+                </div>
+            {% else %}
+
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <a href="{% url 'appartmentList' %}">
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h6>Appartments</h6>
+
+                                <p>{{ appartment.price }} FCFA</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                        </div>
+                    </a> 
+                </div>
+
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

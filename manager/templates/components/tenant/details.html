@@ -1,0 +1,134 @@
+{% extends 'app.html' %}
+
+{% load static %}
+
+{% block style %}
+<!-- summernote -->
+<link rel="stylesheet" href="{% static 'manager/plugins/summernote/summernote-bs4.min.css' %}">
+{% endblock %}
+
+{% block js %}
+<!-- Summernote -->
+<script src="{% static 'manager/plugins/summernote/summernote-bs4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+  })
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+	<div class="container-fluid">
+	  <div class="row">
+		  <div class="col-md-12 mt-3">
+            <div class="card">
+                <form>
+                  {% csrf_token %}
+                  <input name="id" value="{{tenant.id}}" hidden>
+                  <div class="card-body">
+                    <a onclick="history.back()" class="btn btn-outline-danger btn-sm mb-3">
+                      <i class="fas fa-arrow-left"></i>
+                      Retour
+                    </a>
+                    {% if user.is_staff %}
+                      <a href="{% url 'landlordEdit' pk=tenant.id %}">
+                          <button type="button" class="btn btn-outline-primary btn-sm mr-1 mb-3">
+                            <i class="fas fa-edit"></i> Mettre à jour
+                          </button>
+                      </a>
+                    {%endif%}
+                    <p style="line-height: 30px;">
+                      <span>Nom et prénoms : <b>{{tenant.user.last_name}} {{tenant.user.first_name}}</b></span><br>
+                      <span>Adresse : <b>{{tenant.address}}</b></span><br>
+                      <span>E-mail : <b>{{tenant.user.email}}</b></span><br>
+                      <span>Téléphone : <b>{{tenant.phone_number}}</b></span><br>
+                    </p>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered mt-4">
+                            <thead>
+                              <tr>
+                                <th>Nom du fichier</th>
+                                <th>Lien de téléchargement</th>
+                                <th>Type de document</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <a href="{{ tenant.id_file_path.url }}" target="_blank">{{ tenant.id_file_path }}</a>
+                                    </td>
+                                    <td>{{ tenant.id_file_path }}</td>
+                                    <td>CNI/Passeport</td>
+                                    <td>
+                                        <a href="{{ tenant.id_file_path.url }}" target="_blank" class="btn btn-outline-danger btn-sm mr-1">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </form>
+              </div>
+		  </div>
+
+          <div class="col-md-12 mt-3">
+            <div class="card">
+                <form>
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-12 mb-0">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th>#</th>
+                                        <th>Matricule</th>
+                                        <th>Appartement</th>
+                                        <th>Durée du contrat</th>
+                                        <th>Expiration</th>
+                                        <th></th>
+                                      </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for contract in contracts %}
+                                            <tr>
+                                                <td>{{ contract.id }}</td>
+                                                <td>{{ contract.code }}</td>
+                                                <td>{{ contract.appartment }}</td>
+                                                <td>{{ contract.duration }} year(s)</td>
+                                                <td>{{ contract.date_end }}</td>
+                                                <td>
+                                                  {% if user.is_staff %}
+                                                    <a href="{% url 'contractEdit' pk=contract.id %}" class="btn btn-outline-primary btn-sm mr-1">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                  {% endif %}
+
+                                                    <a class="btn btn-outline-danger btn-sm mr-1">
+                                                      <i class="fas fa-download"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+		  </div>
+	  </div>
+	</div>
+</section>
+{% endblock %}

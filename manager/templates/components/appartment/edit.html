@@ -1,0 +1,176 @@
+{%extends 'app.html'%}
+
+{%load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'manager/plugins/summernote/summernote-bs4.min.css' %}">
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'manager/plugins/summernote/summernote-bs4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    $('#summernote').summernote()
+  })
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+	<div class="container-fluid">
+	  <div class="row">
+		  <div class="col-md-12 mt-3">
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Veuillez remplir tous les champs</strong>
+            </div>
+            {% endif %}
+            <div class="card">
+                <form action="{% url 'appartmentSave' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %} 
+                  <input type="text" value="{{appartment.id}}" name="id" hidden>
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="appartment_name">Nom de l'appartement*</label>
+                            <input type="text" class="form-control" value="{{appartment.name}}" name="appartment_name" id="appartment_name">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label for="appartment_price">Prix du loyer*</label>
+                          <input type="number" class="form-control" value="{{ appartment.price|floatformat:"-2" }}" name="appartment_price" id="appartment_price" min="0" step="any">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label for="appartment_bail">Prix de la caution</label>
+                          <input type="number" class="form-control" value="{{appartment.bail}}" name="appartment_bail" id="appartment_bail" min="0" step="any">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label for="appartment_address">Adresse*</label>
+                          <input type="text" class="form-control" value="{{appartment.address}}" name="appartment_address" id="appartment_address">
+                        </div>
+                        <div class="form-group col-md-12 mb-0">
+                            <label for="summernote">Description*</label>
+                            <textarea id="summernote" name="appartment_description">
+                                {{appartment.description}}
+                            </textarea>
+                        </div>
+                      </div>
+                  </div>
+  
+                  <div class="card-footer"> 
+                    <a onclick="history.back()" class="btn btn-danger">
+                      <i class="fas fa-arrow-left"></i>
+                      Retour
+                    </a>
+                    <button type="submit" class="btn btn-primary mr-1">Enrégistrer</button>
+                    <button type="button" class="btn btn-success mr-1" data-toggle="modal" data-target="#modal-default">Ajout des images</button>
+                  </div>
+                </form>
+              </div>
+		  </div>
+	  </div>
+    
+    <div class="modal fade" id="modal-default">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Default Modal</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'addpic' %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %} 
+                  <input type="text" value="{{appartment.id}}" name="id" hidden>
+                  <label for="image_pic">Image Appartment</label>
+                  <input type="file" class="form-control" name="image_fil" id="image_pic" multiple>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Ajout</button>
+              </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <div class="form-group col-md-12 mt-3 mb-0">
+      <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Image appartement</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for im in image_fil%}
+              <tr >
+                  <td></td>
+                  <td>
+                    <div class="filtr-item col-sm-2" data-category="1" data-sort="white sample">
+                        <a href="{{ im.image_url }}" data-toggle="lightbox" data-title="sample 1 - white">
+                        <img src="{{ im.image_url }}" class="img-fluid mb-2" alt="white sample"/>
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="modal fade" id="modal-default{{ im.id }}">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title">Default Modal</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                              <div class="filtr-item col-sm-2" data-category="1" data-sort="white sample">
+                                <a href="{{ im.image_url }}" data-toggle="lightbox" data-title="sample 1 - white">
+                                <img src="{{ im.image_url }}" class="img-fluid mb-2" alt="white sample"/>
+                              </a>
+                            </div>
+                            <form action="{% url 'editpic' %}" method="POST" enctype="multipart/form-data">
+                                  {% csrf_token %} 
+                                  <input type="text" value="{{im.id}}" name="id" hidden>
+                                  <label for="image_pic">Image Appartment</label>
+                                  <input type="file" class="form-control" value="{{appartment.name}}" name="image_fil" id="image_pic">
+                          </div>
+                          <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">modifier</button>
+                          </div>
+                        </form>
+                        </div>
+                        <!-- /.modal-content -->
+                      </div>
+                      <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+                      <div class="custom-file">
+                          <input type="file" class="custom-file-input" name="contract_file" id="contract_file" hidden>
+                          <label for="contract_file">
+                              <a class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal" data-target="#modal-default{{ im.id }}">
+                                  <i class="fas fa-edit"></i>
+                              </a>
+                          </label>
+
+                          <a href="{% url 'deletepic' pk=im.id %}" class="btn btn-outline-danger btn-sm">
+                              <i class="fas fa-trash"></i>
+                          </a>  
+                      </div>       
+                  </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+    </div>
+	</div>
+</section>
+{% endblock %}

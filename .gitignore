@@ -1,0 +1,33 @@
+# Fichiers générés par Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Fichiers générés par l'IDE (à personnaliser en fonction de votre IDE)
+.idea/
+.vscode/
+
+# Fichiers de configuration pour certains éditeurs/texteurs (à personnaliser en fonction de votre choix)
+*.swp
+*.swo
+*.swn
+*.swm
+*.bak
+*.backup
+*.sublime-workspace
+
+# Fichiers de logs
+logs/
+*.log
+
+
+
+# Répertoires d'environnement virtuel Python (à personnaliser si vous utilisez un autre gestionnaire d'environnement virtuel)
+venv/
+env/
+ENV/
+
+# Ignorer les fichiers de migration Django
+**/migrations/
+
+

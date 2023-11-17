@@ -1,0 +1,82 @@
+{%extends 'app.html'%}
+
+{%load static %}
+
+{% block style %}
+<!-- summernote -->
+<link rel="stylesheet" href="{% static 'manager/plugins/summernote/summernote-bs4.min.css' %}">
+{% endblock %}
+
+{% block js %}
+<!-- Summernote -->
+<script src="{% static 'manager/plugins/summernote/summernote-bs4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+  })
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+	<div class="container-fluid">
+	  <div class="row">
+		  <div class="col-md-12 mt-3">
+        {% if form.errors %}
+          <div class="alert alert-danger">
+              <strong>Veuillez remplir tous les champs</strong>
+          </div>
+        {% endif %}
+            <div class="card">
+                <form action="{% url 'retraitAdd' %}" method="POST">
+                  {% csrf_token %}
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                          <span>Remplissez le formulaire </span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="code">A l'ordre de : *</label>
+                            <input type="text" class="form-control" name="code" id="last_name" required>
+                        </div>
+                          
+                        <div class="form-group col-md-4">
+                            <label for="montant">Montant*</label>
+                            <input type="number" class="form-control" name="montant" id="first_name" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="building_type">Mode de paiement*</label>
+                          <select class="form-control select2" style="width: 100%;" name="appartment" id="appartment" required>
+                              <option value="Flooz Money">Flooz Money</option>
+                              <option value="T-Money">T-Money</option>
+                              {% if user.is_staff%}
+                              <option value="Express">Express</option>
+                              {% endif %}
+                          </select>
+                      </div>
+
+                      <div class="form-group col-md-12 mb-0">
+                        <label for="summernote">Description*</label>
+                          <textarea id="summernote" name="description">
+                          </textarea>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary mr-1">Enrégistrer</button>
+                    <a href="{% url 'retraiListConn' %}">
+                      <button type="button" class="btn btn-danger"> Annuler</button>
+                    </a>
+                  </div>
+                </form>
+              </div>
+		  </div>
+
+
+	  </div>
+	</div>
+</section>
+{% endblock %}

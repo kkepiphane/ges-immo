@@ -1,0 +1,94 @@
+{%extends 'app.html'%}
+
+{%load static %}
+
+{% block style %}
+<!-- summernote -->
+<link rel="stylesheet" href="{% static 'manager/plugins/summernote/summernote-bs4.min.css' %}">
+{% endblock %}
+
+{% block js %}
+<!-- Summernote -->
+<script src="{% static 'manager/plugins/summernote/summernote-bs4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+  })
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+	<div class="container-fluid">
+    
+	  <div class="row">
+		  <div class="col-md-12 mt-3">
+            <div class="card">
+                <form action="{% url 'landlordSave' %}" method="POST" enctype="multipart/form-data">
+                  <a onclick="history.back()" class="btn btn-outline-danger btn-sm mb-3">
+                    <i class="fas fa-arrow-left"></i>
+                    Retour
+                </a>
+                  {% csrf_token %}
+                  <input name="id" value="{{building.id}}" hidden>
+                  <div class="card-body">
+                    {% if user.is_staff %}
+                      <a href="{% url 'appartmentEdit' pk=appartment.id %}">
+                        <button type="button" class="btn btn-sm btn-outline-primary mr-1 mb-3">
+                          <i class="fas fa-edit mr-1"></i> Mettre à jour
+                        </button>
+                      </a>
+                    {%endif%}
+
+                    <p style="line-height: 30px;">
+                      
+                      <span>Nom de l'immeuble : <b>{{appartment.building}}</b></span><br>
+                      <span>Nom de l'appartement : <b>{{appartment.name}}</b></span><br>
+                      <span>Adresse: <b>{{appartment.address}}</b></span><br>
+                      <span>Description : <br>{{appartment.description_}}</span><br>
+                    </p>
+                  </div>
+                </form>
+              </div>
+		  </div>
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div>
+                <div class="card-header">
+                </div>
+                <div class="card-body">
+                  <div>
+                    <div class="btn-group w-100 mb-2">
+                      <a class="btn btn-info active" href="javascript:void(0)" data-filter="all">  All images Appartement : {{appartment.name}} </a>
+                      <a class="btn" href="javascript:void(0)" data-filter="1"> </a>
+                      <a class="btn" href="javascript:void(0)" data-filter="2"></a>
+                      <a class="btn" href="javascript:void(0)" data-filter="3"> </a>
+                      <a class="btn" href="javascript:void(0)" data-filter="4"></a>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="filter-container p-0 row">
+                        {% for im in image_fil%}
+                          <div class="filtr-item col-sm-2" data-category="1" data-sort="white sample">
+                            <a href="{{ im.image_fil.url }}" data-toggle="lightbox" data-title="sample 1 - white">
+                              <img src="{{ im.image_url }}" class="img-fluid mb-2" alt="white sample"/>
+                            </a>
+                          </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+	  </div>
+	</div>
+</section>
+{% endblock %}

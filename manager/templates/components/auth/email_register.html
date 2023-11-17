@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			@import url('https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900');
+		</style>
+        <style>
+            a:link {
+              text-decoration: none;
+            }
+            
+            a:visited {
+              text-decoration: none;
+            }
+            
+            a:hover {
+              text-decoration: underline;
+            }
+            
+            a:active {
+              text-decoration: underline;
+            }
+            img {
+              {% comment %} border: 1px solid #ddd; {% endcomment %}
+              border-radius: 4px;
+              padding: 5px;
+              width: 150px;
+            }
+        </style>
+	</head>
+	<body style="background: #f5f8fa;font-family: 'Roboto', sans-serif;">
+		<div style="width: 90%;max-width:600px;margin: 20px auto;background: #ffffff;">
+			<section style="margin: 0 15px;color:#425b76;">
+        {% comment %} <img src="{% static '../../../static/manager/dist/img/logo.png' %}" /> {% endcomment %}
+				<h3 style="margin: 40px 0 27px 0;text-align: center;">Votre compte a été créé avec succès.</h3>
+				<hr style="border:0;border-top: 1px solid rgba(66,91,118,0.3);max-width: 50%">
+				<p style="font-size:15.5px;font-weight: bold;margin:40px 20px 15px 20px;">
+                    <div>Salut <b>{{first_name}}</b>,</div>
+                    <div>Nous sommes heureux de vous informer que votre compte sur immo a été créé avec succès</div>
+                    <div>Vous trouverez ci-dessous vos identifiants :</div>
+                    <div>Username : <b>{{username}}</b></div>
+                    <div>Mot de passe : <b>password</b></div>
+                    <a href="immotogo.pythonanywhere.com/login">Connectez vous et changez les identifiants à tout moment</a>
+                </p>
+			</section>
+		</div>
+	</body>
+</html>

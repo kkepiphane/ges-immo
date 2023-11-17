@@ -1,0 +1,87 @@
+{%extends 'app.html'%}
+
+{%load static %}
+
+{% block style %}
+<!-- summernote -->
+<link rel="stylesheet" href="{% static 'manager/plugins/summernote/summernote-bs4.min.css' %}">
+{% endblock %}
+
+{% block js %}
+<!-- Summernote -->
+<script src="{% static 'manager/plugins/summernote/summernote-bs4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+  })
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+	<div class="container-fluid">
+	  <div class="row">
+		  <div class="col-md-12 mt-3">
+        {% if form.errors %}
+          <div class="alert alert-danger">
+              <strong>Veuillez remplir tous les champs</strong>
+          </div>
+        {% endif %}
+            <div class="card">
+                <form action="{% url 'buildingAdd' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input name="landlord" value="{{landlord.id}}" hidden>
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="building_name">Nom de la propriété*</label>
+                            <input type="text" class="form-control" name="building_name" id="building_name" required>
+                        </div>
+                          
+                        <div class="form-group col-md-4">
+                            <label for="building_type">Catégorie*</label>
+                            <select class="form-control select2" style="width: 100%;" name="building_type" id="building_type" required>
+                              <option selected="selected" value="building">Immeuble d'appartements</option>
+                              <option value="Villa">Villa</option>
+                            </select>
+                        </div>
+  
+                        <div class="form-group col-md-4">
+                            <label for="building_address">Adresse*</label>
+                            <input type="text" class="form-control" name="building_address" id="building_address" required>
+                        </div>
+  
+                        <div class="form-group col-md-12 mb-0">
+                          <label for="summernote">Description*</label>
+                            <textarea id="summernote" name="building_description" required>
+                            </textarea>
+                        </div>
+  
+                        <div class="form-group col-md-4">
+                          <label for="contract_file">Contrat de gestion*</label>
+                          <div class="input-group">
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" name="contract_file" id="contract_file" required>
+                              <label class="custom-file-label" for="contract_file"></label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+  
+                  <div class="card-footer">
+                    <a onclick="history.back()" class="btn btn-danger">
+                      <i class="fas fa-arrow-left"></i>
+                      Retour
+                    </a>
+                    <button type="submit" class="btn btn-primary mr-1">Enrégistrer</button>
+                  </div>
+                </form>
+              </div>
+		  </div>
+	  </div>
+	</div>
+</section>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'app.html' %}
+
+{% load static %}
+
+{% block content %}
+<section class="content">
+	<div class="container-fluid">
+	  <div class="row">
+		<div class="col-md-12 mt-3">
+		  <div class="card">
+			<div class="card-body"> 
+              <a onclick="history.back()" class="btn btn-outline-danger btn-sm mb-3">
+                <i class="fas fa-arrow-left"></i>
+                Retour
+              </a>
+                {% if user.is_staff %}
+                <a href="{% url 'paymentCreate' %}" class="btn btn-sm btn-outline-primary mb-3">
+                            <i class="fas fa-plus"></i>
+                            Ajouter un paiement
+                        </a>
+                {% endif %}
+                <section class="content">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="sticky-top mb-3">
+                            <div class="card">
+                              <div class="card-header">
+                                <h4 class="card-title">Détails</h4>
+                              </div>
+                              <div class="card-body">
+                                <!-- the events -->
+                                <div id="external-events">
+                                  <div class="external-event bg-warning" style="color:#fff !important;">Date paiement : {{ payment.date_create }}</div>
+                                  {% comment %} <div class="external-event bg-warning">Go home</div> {% endcomment %}
+                                  <div class="external-event bg-primary">Durée contrat : {{ payment.bill.contract.duration }} ans </div>
+                                  <div class="external-event bg-danger">Fin contrat : {{ payment.bill.contract.date_end }}</div>
+                                  <div class="external-event bg-warning">Fin contrat : {{ payment.bill.contract.date_end }}</div>
+                                  <div class="external-event bg-info">
+                                    <p>Immeuble : {{ payment.bill.contract.appartment.building.name }}</p>
+                                    <p>Adresse : {{ payment.bill.contract.appartment.building.address }}</p>
+                                    <p>Description : {{ payment.bill.contract.appartment.description_ }}</p>
+                                    <p>Caution : {{ payment.bill.contract.appartment.bail }}</p>
+                                    <p>Appartement : {{ payment.bill.contract.appartment }}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                          </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-9">
+                          <div class="card card-primary">
+                            <div class="card-body p-0">
+                              <!-- THE CALENDAR -->
+                              <div style="overflow-x:auto;">
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <!-- <th style="width: 10px">#</th> -->
+                                      <th>Numéro de transfert</th>
+                                      <th>Mois payés</th>
+                                      <th>Destinataire</th>
+                                      <th>Mode</th>
+                                      <th>Reçu de paiement</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>{{ payment.code }}</td>
+                                      <td><span class="external-event bg-success">{{ payment.bill.contract.date_begin }} - {{ payment.bill.due_date }}</span></td>
+                                      <td>
+                                        {% if payment.payment_type == 1 %}
+                                          {{ payment.iBill }}
+                                        {% else %}
+                                          IMMO
+                                        {% endif %}
+                                      </td>
+                                      <td>
+                                        {{ payment.pay_method }}
+                                      </td>
+                                      <td>
+                                        <a href="{{ payment.bill.contract.contract_file_path }}" class="btn btn-outline-danger btn-sm mr-1">
+                                          <i class="fas fa-download"></i>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <!-- /.card-body -->
+                          </div>
+                          <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
+                    </div><!-- /.container-fluid -->
+                  </section>
+		  </div>
+		</div>
+	  </div>
+	</div>
+</section>
+<!-- AdminLTE App -->
+{% endblock %}

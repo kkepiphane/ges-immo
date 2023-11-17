@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Log in</title>
+
+  {% include '.../../includes/css.html' %}
+  {% block style %}
+  {% endblock %}
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="card card-outline card-secondary">
+    <div class="card-body login-card-body">
+      
+      <img src="{% static '../../../static/manager/dist/img/logo.png' %}" />
+      <form action="{% url 'loginUser' %}" method="post">
+        {%csrf_token%}
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur" required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" name="password" placeholder="Mot de passe" required>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+         
+          <div class="col-12">
+            <button type="submit" class="btn btn-info btn-block">Connexion</button>
+          </div>
+        
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% include '../../includes/js.html' %}
+        {% block js %}
+        {% endblock %}
+</body>
+</html>

@@ -1,0 +1,86 @@
+{%extends 'app.html'%}
+
+{%load static %}
+
+{% block style %}
+<!-- summernote -->
+<link rel="stylesheet" href="{% static 'manager/plugins/summernote/summernote-bs4.min.css' %}">
+{% endblock %}
+
+{% block js %}
+<!-- Summernote -->
+<script src="{% static 'manager/plugins/summernote/summernote-bs4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+  })
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+	<div class="container-fluid">
+	  <div class="row">
+		  <div class="col-md-12 mt-3">
+        {% if messages %}
+          <div class="alert alert-success">
+            {% for message in messages %}
+              <strong{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</strong>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <a onclick="history.back()" class="btn btn-outline-danger btn-sm mb-3">
+          <i class="fas fa-arrow-left"></i>
+          Retour
+          </a>
+        {% if bills|length > 0%}
+            <div class="card">
+                  <form action="{% url 'paymentAddu' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="card-body">
+                      <div class="row">
+                          {% comment %} <div class="form-group col-md-4">
+                              <label for="code">Numéro de transaction*</label>
+                              <input type="text" class="form-control" name="code" id="code" required>
+                          </div> {% endcomment %}
+                            
+                          <div class="form-group col-md-6">
+                              <label for="bill">Moyen de paiement*</label>
+                              <select class="form-control select2" style="width: 100%;" name="pay_method" id="pay_method" required>
+                                <option value="T-Money">T-Money</option>
+                                <option value="Flooz">Flooz</option>
+                              </select>
+                          </div>
+
+                          <div class="form-group col-md-6">
+                              <label for="bill">Facture*</label>
+                              <select class="form-control select2" style="width: 100%;" name="bill" id="bill" required>
+                                <option value="" disabled>Choisir une facture</option>
+                                {% for bill in bills %}
+                                  <option value="{{bill.id}}">F{{bill.id}} {{ bill }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                      </div>
+                    </div>
+    
+                    <div class="card-footer">
+                      <button type="submit" class="btn btn-primary mr-1">Payer</button>
+                      <a href="{% url 'paymentList' %}">
+                        <button type="button" class="btn btn-danger"> Annuler</button>
+                      </a>
+                    </div>
+                  </form>
+            </div>
+            {%else%}
+                  Aucune facture à payer
+                {% endif %}
+		  </div>
+
+
+	  </div>
+	</div>
+</section>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'app.html' %}
+
+{% load static %}
+
+{% block content %}
+<section class="content">
+	<div class="container-fluid">
+	  <div class="row">
+		<div class="col-md-12 mt-3">
+		  <div class="card">
+			<div class="card-body">
+        <a onclick="history.back()" class="btn btn-outline-danger btn-sm mb-3">
+          <i class="fas fa-arrow-left"></i>
+          Retour
+        </a>
+        {% if user.is_staff %}
+          <a href="{% url 'tenantCreate' %}" class="btn btn-sm btn-outline-primary mb-3">
+          <i class="fas fa-user-plus"></i>
+          Ajouter un locataire
+          </a>
+        {%endif%}
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Nom et Prénoms</th>
+                      <th>Adresse</th>
+                      <th>Téléphone</th>
+                      <th>Etat du compte</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for tenant in tenants %}
+                      <tr>
+                        <td>{{ tenant }}</td>
+                        <td>{{ tenant.address }}</td>
+                        <td>{{ tenant.phone_number }}</td>
+                        <td>
+                          {% if tenant.user.is_active %}
+                            <span class="badge bg-success">Activé</span>
+                          {% else %}
+                            <span class="badge bg-danger">Désactivé</span>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if user.is_staff %}
+                            {% if tenant.user.is_active %}
+                              <a href="{% url 'tenantActivate' pk=tenant.user.id is_active='False' %}" class="btn btn-outline-danger btn-sm mr-1">
+                                <i class="fas fa-user-times"></i>
+                              </a>
+                            {% else %}
+                              <a href="{% url 'tenantActivate' pk=tenant.user.id is_active='True' %}" class="btn btn-outline-success btn-sm mr-1">
+                                <i class="fas fa-user-check"></i>
+                              </a>
+                            {% endif %}
+
+                            {% comment %} <a href="{% url 'landlordEdit' pk=tenant.id %}" class="btn btn-outline-primary btn-sm mr-1">
+                              <i class="fas fa-edit"></i>
+                            </a> {% endcomment %}
+                          {%endif%}
+                          <a href="{% url 'tenantDetail' pk=tenant.id %}" class="btn btn-outline-warning btn-sm mr-1">
+                            <i class="fas fa-eye"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+			</div>
+			<!-- /.card-body -->
+			<div class="card-footer clearfix">
+			  <ul class="pagination pagination-sm m-0 float-right">
+				<li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+			  </ul>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+</section>
+{% endblock %}

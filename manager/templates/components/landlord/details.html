@@ -1,0 +1,128 @@
+{% extends 'app.html' %}
+
+{% load static %}
+
+{% block style %}
+<!-- summernote -->
+<link rel="stylesheet" href="{% static 'manager/plugins/summernote/summernote-bs4.min.css' %}">
+{% endblock %}
+
+{% block js %}
+<!-- Summernote -->
+<script src="{% static 'manager/plugins/summernote/summernote-bs4.min.js' %}"></script>
+
+<script>
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+  })
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 mt-3">
+                <div class="card">
+                    <div class="card-body overflow-auto">
+                        <a onclick="history.back()" class="btn btn-outline-danger btn-sm mb-3">
+                            <i class="fas fa-arrow-left"></i>
+                            Retour
+                          </a>
+                        <a href="{% url 'landlordEdit' pk=landlord.id %}">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-3">
+                                <i class="fas fa-edit mr-1"></i> Mettre à jour
+                            </button>
+                        </a>
+                        <p style="line-height: 30px;">
+                            <span>Nom et prénoms : <b>{{landlord.user.last_name}} {{landlord.user.first_name}}</b></span><br>
+                            <span>Adresse : <b>{{landlord.address}}</b></span><br>
+                            <span>E-mail : <b>{{landlord.user.email}}</b></span><br>
+                            <span>Téléphone : <b>{{landlord.phone_number}}</b></span><br>
+                        </p>
+
+                        <table class="table table-bordered mt-4 table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom du fichier</th>
+                                    <th>Lien de téléchargement</th>
+                                    <th>Pièce d'identité</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>#</td>
+                                    <td>
+                                        <a href="{{ landlord.id_file_path.url }}">{{ landlord.id_file_path.url }}</a>
+                                    </td>
+                                    <td>{{ landlord.id_file_path.url }}</td>
+                                    <td>CNI/Passeport</td>
+                                    <td>
+                                        <a href="{{ landlord.id_file_path.url }}" class="btn btn-outline-danger btn-sm mr-1">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 mt-3">
+            <div class="card">
+                <form action="{% url 'landlordSave' %}" method="POST" enctype="multipart/form-data">
+                    <div class="card-body overflow-auto">
+                        <div class="row">
+                            <div class="form-group col-md-12 mb-0">
+                                <a href="{% url 'buildingCreate' pk=landlord.id %}">
+                                    <button type="button" class="btn btn-outline-primary btn-sm mr-1 mb-3">
+                                        <i class="fas fa-plus"></i> Ajouter une propriété
+                                    </button>
+                                </a>
+
+                                <table class="table table-bordered table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nom</th>
+                                            <th>Adresse</th>
+                                            <th>Type de propriété</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for building in buildings %}
+                                        <tr>
+                                            <td>{{ building.id }}</td>
+                                            <td>{{ building.name }}</td>
+                                            <td>{{ building.address }}</td>
+                                            <td>{{ building.building_type.name }}</td>
+                                            <td>
+                                                <a href="{% url 'buildingEdit' pk=building.id %}" class="btn btn-outline-primary btn-sm mr-1">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+
+                                                <a href="{% url 'buildingDetail' pk=building.id %}" class="btn btn-outline-warning btn-sm mr-1">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
